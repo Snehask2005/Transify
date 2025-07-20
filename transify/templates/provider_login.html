@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Provider Login | Transify</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+  
+</head>
+<body>
+
+    <div class="login-container">
+    <div class="card">
+      <h2 class="text-center">Transport Provider Login</h2>
+
+      <form method="POST" action="{% url 'provider_login' %}">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" name="username" id="username" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-full">Login</button>
+      </form>
+
+      <div class="links">
+        <a href="#">Forgot Password?</a>
+        <a href="{% url 'provider_reg' %}">New user? Register</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

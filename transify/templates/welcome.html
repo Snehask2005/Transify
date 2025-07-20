@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to Transify</title>
+    <link rel="stylesheet" href="{% static 'css/welcome.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #f4f4f4, #d7f0dc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            color: #2c3e50;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            color: #34495e;
+        }
+
+        .get-started-btn {
+            background-color: #27ae60;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+
+        .get-started-btn:hover {
+            background-color: #219150;
+        }
+    </style>
+</head>
+<body>
+    <div class="coin-container mx-auto mt-4">
+  <svg class="animated-coin" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    
+    <!-- Gradient and shading defs -->
+    <defs>
+      <!-- Radial gold gradient for 3D coin base -->
+      <radialGradient id="gold3D" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#fff6b7"/>
+        <stop offset="30%" stop-color="#f6d365"/>
+        <stop offset="100%" stop-color="#d9a441"/>
+      </radialGradient>
+
+      <!-- Inner highlight for gloss -->
+      <radialGradient id="shine" cx="30%" cy="30%" r="50%">
+        <stop offset="0%" stop-color="white" stop-opacity="0.5"/>
+        <stop offset="100%" stop-color="white" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+
+    <!-- Coin base with 3D effect -->
+    <circle cx="50" cy="50" r="40" fill="url(#gold3D)" class="glow"/>
+
+    <!-- Glossy overlay for shine -->
+    <circle cx="50" cy="50" r="40" fill="url(#shine)" />
+
+    <!-- Inner dark edge to give depth -->
+    <circle cx="50" cy="50" r="38" stroke="#b78c3d" stroke-width="2" fill="none"/>
+
+    <!-- Dollar Sign -->
+    <text x="50%" y="55%" text-anchor="middle" dominant-baseline="middle"
+          font-size="28" font-weight="bold" fill="#333" font-family="Poppins, sans-serif">
+      $
+    </text>
+  </svg>
+</div>
+
+
+
+    <h1>Welcome to Transify</h1>
+    <p><em>Move Green, Earn Clean</em></p>
+    <a href="{% url 'choose_role' %}" class="get-started-btn">Get Started</a>
+</body>
+</html>

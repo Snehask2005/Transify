@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Choose Your Role</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+
+    @media (max-width: 600px) {
+    .role-options {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom right, #e1f5ec, #ffffff);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 40px;
+      color: #2c3e50;
+    }
+
+    .role-options {
+      display: flex;
+      gap: 50px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .role-box {
+      background: #ffffff;
+      border: 2px solid #27ae60;
+      border-radius: 12px;
+      padding: 30px;
+      width: 220px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .role-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .role-box img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      margin-bottom: 15px;
+    }
+
+    .role-box h4 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+
+    .role-box button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      background-color: #27ae60;
+      color: white;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .role-box button:hover {
+      background-color: #219150;
+    }
+  </style>
+</head>
+<body>
+  <h2>Who are you?</h2>
+  <div class="role-options">
+
+    <form method="post" action="{% url 'route_by_role' %}">
+      {% csrf_token %}
+      <input type="hidden" name="role" value="client">
+      <div class="role-box">
+        <img src="{% static 'icons/traveller.png' %}" alt="Commuter">
+        <h4>Commuter</h4>
+        <button type="submit">Select</button>
+      </div>
+    </form>
+
+    <form method="post" action="{% url 'route_by_role' %}">
+      {% csrf_token %}
+      <input type="hidden" name="role" value="provider">
+      <div class="role-box">
+        <img src="{% static 'icons/train.png' %}" alt="Provider">
+        <h4>Transport Provider</h4>
+        <button type="submit">Select</button>
+      </div>
+    </form>
+
+  </div>
+</body>
+</html>

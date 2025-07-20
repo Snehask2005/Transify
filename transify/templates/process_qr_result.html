@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>QR Scan Result | Provider Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f3f4f6;
+            padding: 2rem;
+        }
+        .card {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            background-color: #2563eb;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn:hover {
+            background-color: #1d4ed8;
+        }
+        .status {
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        {% if request.session.message %}
+            <p class="status" style="color: green;">{{ request.session.message }}</p>
+            {% empty %}
+        {% elif request.session.error %}
+            <p class="status" style="color: red;">{{ request.session.error }}</p>
+        {% endif %}
+
+        {% if commuter %}
+            <h2>Scanned Commuter Details</h2>
+            <p><strong>Username:</strong> {{ commuter.username }}</p>
+            <p><strong>Full Name:</strong> {{ commuter.full_name }}</p>
+            <p><strong>City:</strong> {{ commuter.city }}</p>
+            <p><strong>Current Wallet Balance:</strong> {{ commuter.wallet_balance }}</p>
+
+            <form method="post" action="{% url 'increment_bounty' commuter.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn">Credit Bounty</button>
+            </form>
+        {% else %}
+            <p>No commuter data available. Please scan a valid QR code.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

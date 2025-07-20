@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scan Commuter QR | Provider Dashboard</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f9fafb;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    h2 {
+      color: #1d4ed8;
+    }
+
+    video {
+      width: 320px;
+      height: auto;
+      margin: auto;
+      border: 2px solid #ccc;
+      border-radius: 0.5rem;
+    }
+
+    .result-box {
+      margin-top: 2rem;
+      background: #e0f7fa;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      display: none;
+      display: inline-block;
+    }
+
+    .btn {
+      background-color: #2563eb;
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 0.4rem;
+      margin-top: 1rem;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #1e40af;
+    }
+  </style>
+</head>
+<body>
+  <h2>Scan Commuter QR Code</h2>
+
+  <video id="video"></video>
+
+  <form id="commuterForm" method="POST" action="{% url 'process_qr' %}">
+    {% csrf_token %}
+    <input type="hidden" name="commuter_id" id="commuter_id">
+    <div id="result" class="result-box">
+      <p>Commuter ID: <span id="commuter_display"></span></p>
+      <button type="submit" class="btn">View & Increment Bounty</button>
+    </div>
+  </form>
+
+  <script type="module">
+    import QrScanner from "https://cdn.jsdelivr.net/npm/qr-scanner@1.4.2/qr-scanner.min.js";
+
+    const videoElem = document.getElementById('video');
+
+    const scanner = new QrScanner(videoElem, result => {
+      console.log('Decoded QR:', result);
+      document.getElementById('commuter_id').value = result;
+      document.getElementById('commuter_display').innerText = result;
+      document.getElementById('result').style.display = 'block';
+      scanner.stop();
+    });
+
+    scanner.start();
+  </script>
+</body>
+</html>
