@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Operator Scan - Transify{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="card w-full max-w-2xl p-6 rounded-lg shadow-md text-center">
+        <h2 class="text-3xl font-bold mb-6">Operator Scan Interface</h2>
+        <p class="text-lg mb-4">Scan a user's personal QR code to check them in/out and update their points.</p>
+
+        <div id="reader" style="width: 100%; max-width: 500px; margin: 0 auto;"></div>
+        <p id="qr-result" class="mt-4 text-lg font-semibold text-blue-700"></p>
+
+        <div class="mt-6">
+            <button type="button" id="start-scan-button" class="btn btn-primary px-4 py-2">Start Scanning</button>
+            <button type="button" id="stop-scan-button" class="btn btn-primary px-4 py-2" style="display:none;">Stop
+                Scanning</button>
+        </div>
+
+        <p class="mt-8 text-sm text-gray-600">
+            This interface will use the device's camera to scan user QR codes.
+            (QR code scanning logic will be added to main.js soon)
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Include the html5-qrcode library -->
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script>
+    // This script will contain the QR scanning logic for the operator interface
+    // It will be added to main.js or a separate operator.js later
+    console.log("Operator scan page loaded.");
+
+    const qrCodeReader = new Html5Qrcode("reader");
+    const qrResultDiv = document.getElementById("qr-result");
+    const startScanButton = document.getElementById("start-scan-button");
+    const stopScanButton = document.getElementById("stop-scan-button");
+
+    let isScanning = false;
+
+    const onScanSuccess = (decodedText, decodedResult) => {
+        if (isScanning) {
+            console.log(`QR Code scanned: ${decodedText}`);
+            qrResultDiv.textContent = `Scanned User ID: ${decodedText}`;
+            // In a real app, you'd send this decodedText (user ID) to your Django backend via API
+            // e.g., sendScanDataToBackend(decodedText);
+
+            // Stop scanning after a successful scan for this demo
+            stopScanning();
+        }
+    };
+
+    const onScanError = (errorMessage) => {
+        // console.warn(`QR Code Scan Error: ${errorMessage}`);
+        // You can display errors on the page if needed
+    };
+
+    const startScanning = () => {
+        if (!isScanning) {
+            qrCodeReader.start(
+                { facingMode: "environment" }, // Prefer rear camera
+                {
+                    fps: 10,    // Frames per second to scan QR code. If not specified, default to 2
+                    qrbox: { width: 250, height: 250 }, // Bounding box for QR code
+                    disableFlip: false // Disable flip to enable scanning upside down qr codes
+                },
+                onScanSuccess,
+                onScanError
+            ).then(() => {
+                isScanning = true;
+                startScanButton.style.display = 'none';
+                stopScanButton.style.display = 'inline-block';
+                qrResultDiv.textContent = "Scanning...";
+            }).catch((err) => {
+                qrResultDiv.textContent = `Error starting scanner: ${err}`;
+                console.error("Error starting scanner:", err);
+            });
+        }
+    };
+
+    const stopScanning = () => {
+        if (isScanning) {
+            qrCodeReader.stop().then(() => {
+                isScanning = false;
+                startScanButton.style.display = 'inline-block';
+                stopScanButton.style.display = 'none';
+                console.log("QR scanning stopped.");
+            }).catch((err) => {
+                console.error("Error stopping scanner:", err);
+            });
+        }
+    };
+
+    startScanButton.addEventListener('click', startScanning);
+    stopScanButton.addEventListener('click', stopScanning);
+
+    // Optional: Stop scanning when the page is unloaded/navigated away
+    window.addEventListener('beforeunload', () => {
+        if (isScanning) {
+            qrCodeReader.stop().catch(err => console.error("Error stopping scanner on unload:", err));
+        }
+    });
+
+</script>
+{% endblock %}
