@@ -11,21 +11,28 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from decouple import config # New import for better secret management
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0p7#uun%wk_qd+sg2r(tc-!*v)f4bkelul=h3-l!vh*m8%$5a%'
+# Use python-decouple to get the secret key from an environment variable or a .env file
+# This is much safer than hardcoding it.
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Use decouple to get this from the environment as well.
+# This makes it easy to switch between production and development.
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+# This list should contain your PythonAnywhere domain.
+# In a real-world scenario, you would also use decouple for this.
+ALLOWED_HOSTS = ['eskaysneha.pythonanywhere.com']
 
 
 # Application definition
@@ -37,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts.apps.AccountsConfig',  
+    'accounts.apps.AccountsConfig', 
     'rewards.apps.RewardsConfig',
 ]
 
@@ -116,7 +123,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
+# This is where Django will serve static files from
 STATIC_URL = 'static/'
+
+# This is the destination directory for `collectstatic`
+# This should be a new folder, separate from your app's 'static' folder.
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# This is a list of additional directories for Django to search for static files
+# We will use this to find the static files in your project-level 'static' folder
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
@@ -129,3 +144,6 @@ AUTH_USER_MODEL = 'accounts.User'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Better to use decouple for this as well.
+GEMINI_API_KEY = config('GEMINI_API_KEY')
