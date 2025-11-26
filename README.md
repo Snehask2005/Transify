@@ -3,7 +3,7 @@ Transportation based bounty hunting system
 Transify: Move Green, Earn Clean
 Transify is an innovative web application designed to incentivize sustainable public transportation by rewarding users with crypto tokens on the Solana blockchain. It aims to promote eco-friendly commuting habits while providing an interactive and accessible user experience.
 
-✨ Features
+Features
 Current Core Features:
 User Authentication & Profiles:
 
@@ -52,12 +52,12 @@ Accessible route planning (data foundation for locations implemented).
 
 Real-time obstacle alerts, "Meet Me" assistance, and other features for disabled users (planned).
 
-🚀 Technologies Used
+Technologies Used
 Backend: Django (Python Web Framework)
 
 Frontend: HTML, CSS (Tailwind CSS for utility-first styling), JavaScript
 
-Database: SQLite (default for development, easily configurable for PostgreSQL/MySQL)
+Database: SQLlite 
 
 APIs:
 
